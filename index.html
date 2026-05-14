@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hệ thống quản lý rạp chiếu phim mini - Đồ án Lập trình hướng đối tượng">
+    <title>🎬 CineMax - Hệ Thống Quản Lý Rạp Chiếu Phim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen" id="login-screen">
+        <div class="login-bg">
+            <div class="login-particles" id="login-particles"></div>
+            <div class="login-gradient-orb login-orb-1"></div>
+            <div class="login-gradient-orb login-orb-2"></div>
+            <div class="login-gradient-orb login-orb-3"></div>
+        </div>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <div class="login-logo">
+                        <span class="login-logo-icon">🎬</span>
+                        <span class="login-logo-text">CineMax</span>
+                    </div>
+                    <p class="login-subtitle">Hệ Thống Quản Lý Rạp Chiếu Phim</p>
+                </div>
+                <form id="login-form" class="login-form">
+                    <div class="login-field">
+                        <label for="login-username">👤 Tên đăng nhập</label>
+                        <input type="text" id="login-username" placeholder="Nhập tên đăng nhập..." required autocomplete="username">
+                        <div class="field-highlight"></div>
+                    </div>
+                    <div class="login-field">
+                        <label for="login-password">🔒 Mật khẩu</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required autocomplete="current-password">
+                            <button type="button" class="toggle-password" id="toggle-password" title="Hiển thị mật khẩu">👁️</button>
+                        </div>
+                        <div class="field-highlight"></div>
+                    </div>
+                    <div class="login-options">
+                        <label class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <span class="checkmark"></span>
+                            Ghi nhớ đăng nhập
+                        </label>
+                    </div>
+                    <div class="login-error" id="login-error"></div>
+                    <button type="submit" class="login-btn" id="login-btn">
+                        <span class="login-btn-text">Đăng Nhập</span>
+                        <span class="login-btn-loader" id="login-loader"></span>
+                    </button>
+                </form>
+                <div class="login-footer">
+                    <div class="login-accounts">
+                        <p class="accounts-title">📋 Tài khoản mặc định:</p>
+                        <div class="account-chips">
+                            <button class="account-chip" data-user="admin" data-pass="admin123">
+                                <span class="chip-avatar admin-chip">AD</span>
+                                <div class="chip-info">
+                                    <span class="chip-name">Admin</span>
+                                    <span class="chip-role">Quản trị viên</span>
+                                </div>
+                            </button>
+                            <button class="account-chip" data-user="staff" data-pass="staff123">
+                                <span class="chip-avatar staff-chip">NV</span>
+                                <div class="chip-info">
+                                    <span class="chip-name">Staff</span>
+                                    <span class="chip-role">Nhân viên</span>
+                                </div>
+                            </button>
+                            <button class="account-chip" data-user="manager" data-pass="manager123">
+                                <span class="chip-avatar manager-chip">QL</span>
+                                <div class="chip-info">
+                                    <span class="chip-name">Manager</span>
+                                    <span class="chip-role">Quản lý</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="login-copyright">© 2026 CineMax Cinema Management System — Đồ án OOP</p>
+        </div>
+    </div>
+
+    <!-- ===== APP WRAPPER (hidden until login) ===== -->
+    <div class="app-wrapper" id="app-wrapper" style="display:none">
+
+    <!-- ===== SIDEBAR NAVIGATION ===== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">CineMax</span>
+            </div>
+            <p class="logo-subtitle">Cinema Management</p>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-section="movies" id="nav-movies">
+                <span class="nav-icon">🎥</span>
+                <span class="nav-label">Quản Lý Phim</span>
+            </a>
+            <a href="#" class="nav-item" data-section="showtimes" id="nav-showtimes">
+                <span class="nav-icon">🕐</span>
+                <span class="nav-label">Lịch Chiếu</span>
+            </a>
+            <a href="#" class="nav-item" data-section="booking" id="nav-booking">
+                <span class="nav-icon">🎫</span>
+                <span class="nav-label">Đặt Vé</span>
+            </a>
+            <a href="#" class="nav-item" data-section="rooms" id="nav-rooms">
+                <span class="nav-icon">🏛️</span>
+                <span class="nav-label">Phòng Chiếu</span>
+            </a>
+            <a href="#" class="nav-item" data-section="customers" id="nav-customers">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Khách Hàng</span>
+            </a>
+            <a href="#" class="nav-item" data-section="revenue" id="nav-revenue">
+                <span class="nav-icon">💰</span>
+                <span class="nav-label">Doanh Thu</span>
+            </a>
+            <a href="#" class="nav-item" data-section="accounts" id="nav-accounts">
+                <span class="nav-icon">🔐</span>
+                <span class="nav-label">Tài Khoản</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar" id="sidebar-avatar">AD</div>
+                <div class="user-details">
+                    <span class="user-name" id="sidebar-username">Admin</span>
+                    <span class="user-role" id="sidebar-role">Quản lý</span>
+                </div>
+            </div>
+            <button class="logout-btn" id="btn-logout" title="Đăng xuất">
+                🚪
+            </button>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="top-bar">
+            <button class="menu-toggle" id="menu-toggle">☰</button>
+            <div class="search-bar">
+                <span class="search-icon">🔍</span>
+                <input type="text" placeholder="Tìm kiếm phim, vé, khách hàng..." id="global-search">
+                <div class="search-results-dropdown" id="search-results-dropdown"></div>
+            </div>
+            <div class="top-bar-actions">
+                <div class="notification-wrapper">
+                    <button class="notification-btn" id="notification-btn">
+                        🔔
+                        <span class="notification-badge" id="notification-badge">0</span>
+                    </button>
+                    <div class="notification-dropdown" id="notification-dropdown">
+                        <div class="notif-header">
+                            <h3>🔔 Thông Báo</h3>
+                            <button class="btn btn-sm btn-secondary" id="notif-clear">Xóa tất cả</button>
+                        </div>
+                        <div class="notif-list" id="notif-list">
+                            <p class="notif-empty">Không có thông báo mới</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="current-time" id="current-time"></span>
+            </div>
+        </header>
+
+        <!-- ===== DASHBOARD SECTION ===== -->
+        <section class="content-section active" id="section-dashboard">
+            <div class="section-header">
+                <h1>Dashboard Tổng Quan</h1>
+                <p class="section-desc">Xem nhanh tình hình hoạt động của rạp chiếu phim</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card stat-movies">
+                    <div class="stat-icon">🎬</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-movies">0</span>
+                        <span class="stat-label">Phim đang chiếu</span>
+                    </div>
+                    <div class="stat-trend up">↑ 12%</div>
+                </div>
+                <div class="stat-card stat-tickets">
+                    <div class="stat-icon">🎫</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-tickets">0</span>
+                        <span class="stat-label">Vé đã bán</span>
+                    </div>
+                    <div class="stat-trend up">↑ 24%</div>
+                </div>
+                <div class="stat-card stat-revenue">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-revenue">0₫</span>
+                        <span class="stat-label">Tổng doanh thu</span>
+                    </div>
+                    <div class="stat-trend up">↑ 18%</div>
+                </div>
+                <div class="stat-card stat-customers">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="stat-total-customers">0</span>
+                        <span class="stat-label">Khách hàng</span>
+                    </div>
+                    <div class="stat-trend up">↑ 8%</div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="dashboard-grid">
+                <div class="card recent-bookings">
+                    <div class="card-header">
+                        <h2>🎫 Đặt Vé Gần Đây</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="booking-list" id="recent-bookings-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+                <div class="card popular-movies">
+                    <div class="card-header">
+                        <h2>🔥 Phim Hot</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="popular-list" id="popular-movies-list">
+                            <!-- Dynamic content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== MOVIES SECTION ===== -->
+        <section class="content-section" id="section-movies">
+            <div class="section-header">
+                <h1>🎥 Quản Lý Phim</h1>
+                <button class="btn btn-primary" id="btn-add-movie">+ Thêm Phim Mới</button>
+            </div>
+            <div class="movies-grid" id="movies-grid">
+                <!-- Dynamic movie cards -->
+            </div>
+
+            <!-- Add/Edit Movie Modal -->
+            <div class="modal-overlay" id="movie-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2 id="movie-modal-title">Thêm Phim Mới</h2>
+                        <button class="modal-close" id="movie-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="movie-form">
+                            <input type="hidden" id="movie-edit-id">
+                            <div class="form-group">
+                                <label for="movie-title">Tên phim *</label>
+                                <input type="text" id="movie-title" required placeholder="Nhập tên phim...">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="movie-genre">Thể loại *</label>
+                                    <select id="movie-genre" required>
+                                        <option value="">-- Chọn thể loại --</option>
+                                        <option value="Hành động">Hành động</option>
+                                        <option value="Tình cảm">Tình cảm</option>
+                                        <option value="Kinh dị">Kinh dị</option>
+                                        <option value="Hài">Hài</option>
+                                        <option value="Viễn tưởng">Viễn tưởng</option>
+                                        <option value="Hoạt hình">Hoạt hình</option>
+                                        <option value="Tài liệu">Tài liệu</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-duration">Thời lượng (phút) *</label>
+                                    <input type="number" id="movie-duration" required min="30" max="300" placeholder="120">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="movie-director">Đạo diễn</label>
+                                    <input type="text" id="movie-director" placeholder="Tên đạo diễn...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="movie-rating">Đánh giá (1-10)</label>
+                                    <input type="number" id="movie-rating" min="1" max="10" step="0.1" placeholder="8.5">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="movie-description">Mô tả</label>
+                                <textarea id="movie-description" rows="3" placeholder="Mô tả ngắn về phim..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="movie-poster">URL Poster</label>
+                                <input type="url" id="movie-poster" placeholder="https://...">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="movie-cancel">Hủy</button>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SHOWTIMES SECTION ===== -->
+        <section class="content-section" id="section-showtimes">
+            <div class="section-header">
+                <h1>🕐 Lịch Chiếu</h1>
+                <button class="btn btn-primary" id="btn-add-showtime">+ Thêm Lịch Chiếu</button>
+            </div>
+            <div class="showtime-table-wrapper">
+                <table class="data-table" id="showtime-table">
+                    <thead>
+                        <tr>
+                            <th>Phim</th>
+                            <th>Phòng</th>
+                            <th>Ngày</th>
+                            <th>Giờ chiếu</th>
+                            <th>Giá vé (VNĐ)</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody id="showtime-tbody">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Showtime Modal -->
+            <div class="modal-overlay" id="showtime-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>Thêm Lịch Chiếu</h2>
+                        <button class="modal-close" id="showtime-modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="showtime-form">
+                            <div class="form-group">
+                                <label for="showtime-movie">Chọn phim *</label>
+                                <select id="showtime-movie" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label for="showtime-room">Chọn phòng *</label>
+                                <select id="showtime-room" required></select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="showtime-date">Ngày chiếu *</label>
+                                    <input type="date" id="showtime-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="showtime-time">Giờ chiếu *</label>
+                                    <input type="time" id="showtime-time" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="showtime-price">Giá vé cơ bản (VNĐ) *</label>
+                                <input type="number" id="showtime-price" required min="0" step="5000" placeholder="75000">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary" id="showtime-cancel">Hủy</button>
+                                <button type="submit" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BOOKING SECTION ===== -->
+        <section class="content-section" id="section-booking">
+            <div class="section-header">
+                <h1>🎫 Đặt Vé Xem Phim</h1>
+            </div>
+            <div class="booking-flow">
+                <!-- Step 1: Choose showtime -->
+                <div class="booking-step" id="booking-step-1">
+                    <h2 class="step-title"><span class="step-num">1</span> Chọn Lịch Chiếu</h2>
+                    <div class="showtime-cards" id="booking-showtimes">
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+
+                <!-- Step 2: Choose seat -->
+                <div class="booking-step hidden" id="booking-step-2">
+                    <h2 class="step-title"><span class="step-num">2</span> Chọn Ghế Ngồi</h2>
+                    <div class="seat-legend">
+                        <div class="legend-item"><span class="seat-demo normal"></span> Thường</div>
+                        <div class="legend-item"><span class="seat-demo vip"></span> VIP (x1.5)</div>
+                        <div class="legend-item"><span class="seat-demo couple"></span> Couple (x2.0)</div>
+                        <div class="legend-item"><span class="seat-demo selected"></span> Đang chọn</div>
+                        <div class="legend-item"><span class="seat-demo occupied"></span> Đã đặt</div>
+                    </div>
+                    <div class="screen-label">MÀN HÌNH</div>
+                    <div class="seat-map" id="seat-map">
+                        <!-- Dynamic seat grid -->
+                    </div>
+                    <div class="booking-summary" id="booking-summary">
+                        <div class="summary-row">
+                            <span>Ghế đã chọn:</span>
+                            <span id="selected-seats-display">Chưa chọn</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tổng tiền:</span>
+                            <span id="total-price-display" class="total-price">0₫</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Customer info -->
+                <div class="booking-step hidden" id="booking-step-3">
+                    <h2 class="step-title"><span class="step-num">3</span> Thông Tin Khách Hàng</h2>
+                    <form id="customer-booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="cust-name">Họ tên *</label>
+                                <input type="text" id="cust-name" required placeholder="Nguyễn Văn A">
+                            </div>
+                            <div class="form-group">
+                                <label for="cust-phone">Số điện thoại *</label>
+                                <input type="tel" id="cust-phone" required placeholder="0901234567">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cust-email">Email</label>
+                            <input type="email" id="cust-email" placeholder="email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="cust-type">Loại khách hàng</label>
+                            <select id="cust-type">
+                                <option value="regular">Khách thường</option>
+                                <option value="member">Thành viên (-10%)</option>
+                                <option value="vip">VIP (-20%)</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" id="booking-back">← Quay lại</button>
+                            <button type="submit" class="btn btn-primary btn-large">🎫 Xác Nhận Đặt Vé</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Step 4: Confirmation -->
+                <div class="booking-step hidden" id="booking-step-4">
+                    <div class="booking-success">
+                        <div class="success-icon">✅</div>
+                        <h2>Đặt Vé Thành Công!</h2>
+                        <div class="ticket-preview" id="ticket-preview">
+                            <!-- Dynamic ticket -->
+                        </div>
+                        <button class="btn btn-primary" id="booking-new">Đặt Vé Mới</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ROOMS SECTION ===== -->
+        <section class="content-section" id="section-rooms">
+            <div class="section-header">
+                <h1>🏛️ Quản Lý Phòng Chiếu</h1>
+            </div>
+            <div class="rooms-grid" id="rooms-grid">
+                <!-- Dynamic room cards -->
+            </div>
+        </section>
+
+        <!-- ===== CUSTOMERS SECTION ===== -->
+        <section class="content-section" id="section-customers">
+            <div class="section-header">
+                <h1>👥 Quản Lý Khách Hàng</h1>
+            </div>
+            <div class="customer-table-wrapper">
+                <table class="data-table" id="customer-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Họ tên</th>
+                            <th>SĐT</th>
+                            <th>Email</th>
+                            <th>Loại KH</th>
+                            <th>Tổng chi tiêu</th>
+                            <th>Số vé đã mua</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-tbody">
+                        <!-- Dynamic content -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ===== REVENUE SECTION ===== -->
+        <section class="content-section" id="section-revenue">
+            <div class="section-header">
+                <h1>💰 Báo Cáo Doanh Thu</h1>
+            </div>
+            <div class="revenue-stats" id="revenue-stats">
+                <div class="revenue-card">
+                    <h3>Doanh thu hôm nay</h3>
+                    <span class="revenue-value" id="rev-today">0₫</span>
+                </div>
+                <div class="revenue-card">
+                    <h3>Doanh thu tuần này</h3>
+                    <span class="revenue-value" id="rev-week">0₫</span>
+                </div>
+                <div class="revenue-card">
+                    <h3>Doanh thu tháng này</h3>
+                    <span class="revenue-value" id="rev-month">0₫</span>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>📊 Doanh Thu Theo Phim</h2>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" id="revenue-chart">
+                        <!-- Dynamic bar chart -->
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:1.5rem">
+                <div class="card-header">
+                    <h2>🧾 Chi Tiết Giao Dịch</h2>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Mã vé</th>
+                                <th>Phim</th>
+                                <th>Khách hàng</th>
+                                <th>Ghế</th>
+                                <th>Thời gian</th>
+                                <th>Số tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Room Detail Modal -->
+        <div class="modal-overlay" id="room-detail-modal">
+            <div class="modal" style="max-width:700px">
+                <div class="modal-header">
+                    <h2 id="room-detail-title">Chi tiết phòng chiếu</h2>
+                    <button class="modal-close" id="room-detail-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div id="room-detail-info" style="margin-bottom:1rem"></div>
+                    <div class="seat-legend" style="margin-bottom:1rem">
+                        <div class="legend-item"><span class="seat-demo normal"></span> Thường</div>
+                        <div class="legend-item"><span class="seat-demo vip"></span> VIP</div>
+                        <div class="legend-item"><span class="seat-demo couple"></span> Couple</div>
+                    </div>
+                    <div class="screen-label">MÀN HÌNH</div>
+                    <div class="seat-map" id="room-detail-seats"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ACCOUNTS SECTION ===== -->
+        <section class="content-section" id="section-accounts">
+            <div class="section-header">
+                <h1>🔐 Quản Lý Tài Khoản</h1>
+            </div>
+            <!-- Current User Profile Card -->
+            <div class="profile-card" id="profile-card">
+                <div class="profile-avatar" id="profile-avatar">AD</div>
+                <div class="profile-info">
+                    <h2 id="profile-name">Admin</h2>
+                    <p id="profile-role">Quản trị viên</p>
+                    <p id="profile-email" style="font-size:0.8rem;color:var(--text-muted)"></p>
+                    <p id="profile-last-login" style="font-size:0.75rem;color:var(--text-muted);margin-top:0.5rem"></p>
+                </div>
+            </div>
+            <!-- Change Password -->
+            <div class="card" style="margin-top:1.5rem">
+                <div class="card-header">
+                    <h2>🔑 Đổi Mật Khẩu</h2>
+                </div>
+                <div class="card-body">
+                    <form id="change-password-form" style="max-width:400px">
+                        <div class="form-group">
+                            <label for="current-password">Mật khẩu hiện tại *</label>
+                            <input type="password" id="current-password" required placeholder="Nhập mật khẩu hiện tại...">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Mật khẩu mới *</label>
+                            <input type="password" id="new-password" required placeholder="Nhập mật khẩu mới..." minlength="4">
+                        </div>
+                        <div class="form-group">
+                            <label for="confirm-password">Xác nhận mật khẩu mới *</label>
+                            <input type="password" id="confirm-password" required placeholder="Nhập lại mật khẩu mới...">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">🔑 Đổi Mật Khẩu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Account List (admin only) -->
+            <div class="card" style="margin-top:1.5rem" id="accounts-list-card">
+                <div class="card-header">
+                    <h2>👥 Danh Sách Tài Khoản</h2>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ tên</th>
+                                <th>Vai trò</th>
+                                <th>Email</th>
+                                <th>Đăng nhập cuối</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accounts-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Toast Notification -->
+        <div class="toast-container" id="toast-container"></div>
+    </main>
+
+    </div> <!-- END app-wrapper -->
+
+    <script src="models.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
